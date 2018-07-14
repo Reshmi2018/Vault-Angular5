@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { VaultComponent } from './vault/vault.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    VaultComponent
   ],
   imports: [
     BrowserModule,
