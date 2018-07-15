@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SecurityService } from './../security.service';
+
 
 /**
  * image info : 45 images in each animation 
@@ -16,7 +18,7 @@ export class VaultComponent implements OnInit {
   basePath: string;
   imgGroup: Array<string>[];
 
-  constructor() { }
+  constructor(private security: SecurityService) { }
 
   ngOnInit() {
     this.groupIndex = 0;
@@ -24,6 +26,7 @@ export class VaultComponent implements OnInit {
     this.basePath = "/assets/img/vault/";
     this.imgGroup = []; 
     this.createImgGroups();
+    console.log(this.security.getQuestion());
   }
 
   createImgGroups(): void {

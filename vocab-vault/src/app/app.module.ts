@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { VaultComponent } from './vault/vault.component';
+import { SecurityService } from './security.service';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { VaultComponent } from './vault/vault.component';
     BrowserModule,
     FontAwesomeModule
   ],
-  providers: [],
+  providers: [SecurityService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
