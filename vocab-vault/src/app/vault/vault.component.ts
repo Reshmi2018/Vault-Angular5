@@ -26,7 +26,6 @@ export class VaultComponent implements OnInit {
     this.basePath = "/assets/img/vault/";
     this.imgGroup = []; 
     this.createImgGroups();
-    console.log(this.security.getQuestion());
   }
 
   createImgGroups(): void {
@@ -42,6 +41,7 @@ export class VaultComponent implements OnInit {
   }
 
   unlockNext() {
+    console.log(this.security.getQuestion());
     let intv = 50;
     let index = 0;
     this.intvID = setInterval(() => {

@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { VaultComponent } from './vault/vault.component';
 import { SecurityService } from './security.service';
 
@@ -13,6 +14,7 @@ import { SecurityService } from './security.service';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     FontAwesomeModule
   ],
   providers: [SecurityService],

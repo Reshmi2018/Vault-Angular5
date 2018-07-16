@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class SecurityService {
@@ -20,11 +21,12 @@ export class SecurityService {
   }
 
   private loadQuestions(): Observable<any> {
-    return this.http.get("./data/questions.json")
-                    .map((res:any) => res.json())
-                    .catch((error:any) => console.log(error));
-
-}
+    return this.http.get("/assets/data/questions.json")
+      .pipe(
+        map((res: any) => res.json()),
+        catchError(error => of(`Bad Promise: ${error}`))
+      );
+  }
 
   next(): any {
     this.qID++;
