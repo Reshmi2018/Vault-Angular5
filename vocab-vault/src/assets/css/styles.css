@@ -59,6 +59,7 @@ body{
   font-size: 45px;
   line-height: 14px;
   position: relative;
+  top:-7px;
 }
 .play.white { 
   background: #efebeb;
@@ -119,5 +120,14 @@ body{
   color: white;
   font-size: 16px;
   margin-left: 42px;
+}
+li{
+  background: white;
+    border-radius: 54px;
+    width: 360px;
+    border: 1px;
+    margin-bottom: 20px;
+    position:relative;
+    max-height:45px
 }
 

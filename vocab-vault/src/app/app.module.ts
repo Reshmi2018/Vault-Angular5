@@ -6,11 +6,13 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { VaultComponent } from './vault/vault.component';
 import { SecurityService } from './security.service';
+import { OptionComponent } from './option/option.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    VaultComponent
+    VaultComponent,
+    OptionComponent
   ],
   imports: [
     BrowserModule,
