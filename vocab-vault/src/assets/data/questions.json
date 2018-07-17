@@ -6,5 +6,19 @@
       "partner", "special", "danger", "splendid"
     ],
     "answer": "danger"
+  },{
+    "qid": "q2",
+    "text": "Meg is my ___________ in math.",
+    "options": [
+      "partner", "special", "danger", "splendid"
+    ],
+    "answer": "partner"
+  },{
+    "qid": "q3",
+    "text": "The queen lives in a ___________ castle.",
+    "options": [
+      "partner", "special", "danger", "splendid"
+    ],
+    "answer": "splendid"
   }
 ]

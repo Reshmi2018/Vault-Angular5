@@ -27,6 +27,12 @@
   margin: 35px 10px;
 }
 
+.submit-panel a.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+}
+
 /** play button icon */
 .play {
   display: inline-block;
