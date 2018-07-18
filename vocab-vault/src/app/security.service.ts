@@ -7,10 +7,12 @@ import { map, catchError } from 'rxjs/operators';
 export class SecurityService {
   private questions;
   private qID: number;
+  private groupIndex: number;
   private questionSubject$: Subject<any>;
 
   constructor(private http: Http) {
     this.qID = 0;
+    this.groupIndex = 0;
     this.questionSubject$ = new Subject();
     this.loadQuestions().subscribe(data => {
       this.questions = data;
@@ -24,20 +26,44 @@ export class SecurityService {
   }
 
   validate(ans) {
-    debugger;
-    if (this.questions[this.qID-1].answer === ans) {
-      this.processNextQuestion(); 
+    var isCorrect = this.questions[this.groupIndex][this.qID].answer === ans;
+    this.questions[this.groupIndex][this.qID].correctAnswered = isCorrect; 
+    this.questions[this.groupIndex][this.qID].try++; 
+    if(isCorrect) {
+      setTimeout(() =>{
+        this.processNextQuestion(); 
+      },2000);
       return true;
-    } else {
-      return false;
+    }else if(!isCorrect && this.questions[this.groupIndex][this.qID].try === 2) {
+      setTimeout(() =>{
+        this.processNextQuestion(); 
+      },2000);
+      return  this.questions[this.groupIndex][this.qID].answer; 
     }
+    return  false;
   }
 
-  processNextQuestion(){
-    if(this.questions.length === this.qID) {
-      return false; 
-    }else {
-      this.sendNext();
+  processNextQuestion() {
+    if (this.groupIndex >= this.questions.length) {
+      return false;
+    } else {
+      let groupCleared = true;
+      this.qID++;
+      for (let i = 0; i < this.questions[this.groupIndex].length; i++,this.qID++ ) {
+        this.qID = this.qID % this.questions[this.groupIndex].length;
+        if (!this.questions[this.groupIndex][this.qID].correctAnswered) {
+          groupCleared = false;
+          this.sendNext();
+          break;
+        }
+      }
+      if (groupCleared && this.groupIndex + 1 < this.questions.length) {
+        this.qID = 0;
+        this.groupIndex++;
+        this.processNextQuestion();
+      } else {
+        return false;
+      }
     }
   }
 
@@ -50,11 +76,12 @@ export class SecurityService {
   }
 
   private sendNext(): void {
+    this.questions[this.groupIndex][this.qID].correctAnswered = false; 
+    this.questions[this.groupIndex][this.qID].try = 0; 
     this.questionSubject$.next({
-      qid: this.questions[this.qID].qid,
-      text: this.questions[this.qID].text,
-      options: this.questions[this.qID].options
+      qid: this.questions[this.groupIndex][this.qID].qid,
+      text: this.questions[this.groupIndex][this.qID].text,
+      options: this.questions[this.groupIndex][this.qID].options,
     });
-    this.qID++;
   }
 }

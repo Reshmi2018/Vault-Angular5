@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { VaultComponent } from './vault/vault.component';
 import { SecurityService } from './security.service';
 import { OptionComponent } from './option/option.component';
+import { RandomOrderPipe } from './random-order.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     VaultComponent,
-    OptionComponent
+    OptionComponent,
+    RandomOrderPipe
   ],
   imports: [
     BrowserModule,
