@@ -90,5 +90,12 @@ ul {
   font-size: 16px;
   margin-left: 42px;
 }
+.question{
+  height: 65px;
+  background: white;
+  width: 90%;
+  border: 5px solid #656464;
+  margin: 24px 0px 0px 29px;
+}
 
 

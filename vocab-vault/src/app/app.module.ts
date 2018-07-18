@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { VaultComponent } from './vault/vault.component';
 import { SecurityService } from './security.service';
 import { OptionComponent } from './option/option.component';
+import { QuestionComponent } from './question/question.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VaultComponent,
-    OptionComponent
+    OptionComponent,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,
