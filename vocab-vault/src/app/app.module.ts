@@ -8,13 +8,15 @@ import { VaultComponent } from './vault/vault.component';
 import { SecurityService } from './security.service';
 import { OptionComponent } from './option/option.component';
 import { RandomOrderPipe } from './random-order.pipe';
+import { QuestionComponent } from './question/question.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VaultComponent,
     OptionComponent,
-    RandomOrderPipe
+    RandomOrderPipe,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,
