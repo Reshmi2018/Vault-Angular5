@@ -15,10 +15,10 @@ export class SecurityService {
     this.qID = 0;
     this.groupIndex = 0;
     this.questionSubject$ = new Subject();
-    this.unlockSubject$ = new Subject(); 
+    this.unlockSubject$ = new Subject();
     this.loadQuestions().subscribe(data => {
       this.questions = data;
-      this.sendNext();
+      this.sendNext(true);
     },
       error => console.log(error));
   }
@@ -33,39 +33,40 @@ export class SecurityService {
 
   validate(ans) {
     var isCorrect = this.questions[this.groupIndex][this.qID].answer === ans;
-    this.questions[this.groupIndex][this.qID].correctAnswered = isCorrect; 
-    this.questions[this.groupIndex][this.qID].try++; 
-    if(isCorrect) {
-      setTimeout(() =>{
-        this.processNextQuestion(); 
-      },2000);
-      this.unlockSubject$.next(); 
+    this.questions[this.groupIndex][this.qID].correctAnswered = isCorrect;
+    this.questions[this.groupIndex][this.qID].try++;
+    if (isCorrect) {
+      setTimeout(() => {
+        this.processNextQuestion();
+      }, 2000);
+      this.unlockSubject$.next();
       return true;
-    }else if(!isCorrect && this.questions[this.groupIndex][this.qID].try === 2) {
-      setTimeout(() =>{
-        this.processNextQuestion(); 
-      },2000);
-      return  this.questions[this.groupIndex][this.qID].answer; 
+    } else if (!isCorrect && this.questions[this.groupIndex][this.qID].try === 2) {
+      setTimeout(() => {
+        this.processNextQuestion();
+      }, 2000);
+      return this.questions[this.groupIndex][this.qID].answer;
     }
-    return  false;
+    return false;
   }
 
   processNextQuestion() {
     if (this.groupIndex >= this.questions.length) {
+      this.sendNext(false);
       return false;
     } else {
       let groupCleared = true;
       this.qID++;
-      for (let i = 0; i < this.questions[this.groupIndex].length; i++,this.qID++ ) {
+      for (let i = 0; i < this.questions[this.groupIndex].length; i++ , this.qID++) {
         this.qID = this.qID % this.questions[this.groupIndex].length;
         if (!this.questions[this.groupIndex][this.qID].correctAnswered) {
           groupCleared = false;
-          this.sendNext();
+          this.sendNext(true);
           break;
         }
       }
-      if (groupCleared && this.groupIndex + 1 < this.questions.length) {
-        this.qID = 0;
+      if (groupCleared && this.groupIndex + 1 <= this.questions.length) {
+        this.qID = -1;
         this.groupIndex++;
         this.processNextQuestion();
       } else {
@@ -82,9 +83,13 @@ export class SecurityService {
       );
   }
 
-  private sendNext(): void {
-    this.questions[this.groupIndex][this.qID].correctAnswered = false; 
-    this.questions[this.groupIndex][this.qID].try = 0; 
+  private sendNext(hasNext: boolean): void {
+    if (!hasNext) {
+      this.questionSubject$.next(null);
+      return;
+    }
+    this.questions[this.groupIndex][this.qID].correctAnswered = false;
+    this.questions[this.groupIndex][this.qID].try = 0;
     this.questionSubject$.next({
       qid: this.questions[this.groupIndex][this.qID].qid,
       text: this.questions[this.groupIndex][this.qID].text,

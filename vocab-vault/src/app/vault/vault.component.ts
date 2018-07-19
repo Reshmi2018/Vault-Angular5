@@ -17,7 +17,7 @@ export class VaultComponent implements OnInit {
   intvID: any;
   basePath: string;
   imgGroup: Array<string>[];
-  skipAnimGroup: Array<number>; 
+  skipAnimGroup: Array<number>;
 
   constructor(private security: SecurityService) { }
 
@@ -25,8 +25,8 @@ export class VaultComponent implements OnInit {
     this.groupIndex = 0;
     this.imgName = 'lock0001.png';
     this.basePath = "/assets/img/vault/";
-    this.imgGroup = []; 
-    this.skipAnimGroup = [1,7]
+    this.imgGroup = [];
+    this.skipAnimGroup = [1, 7, 2, 3, 4, 5, 6, 7, 8];
     this.createImgGroups();
     this.security.unlockVault().subscribe(() => {
       this.unlockNext();
@@ -36,7 +36,7 @@ export class VaultComponent implements OnInit {
   createImgGroups(): void {
     let imgNames = [];
     for (let i = 1; i < 457; i++) {
-      imgNames.push(this.nextImage(i-1));
+      imgNames.push(this.nextImage(i - 1));
       if (i % 46 === 0) {
         this.imgGroup.push(imgNames);
         imgNames = [];
@@ -46,26 +46,26 @@ export class VaultComponent implements OnInit {
   }
 
   unlockNext() {
-    let intv = 50;
+    let intv = 40;
     let index = 0;
     this.intvID = setInterval(() => {
       intv += 2;
       this.imgName = this.imgGroup[this.groupIndex][index++];
       if (index >= this.imgGroup[this.groupIndex].length) {
         clearInterval(this.intvID);
-        this.groupIndex = this.findNextAnimGroup(this.groupIndex+1)
+        this.groupIndex = this.findNextAnimGroup(this.groupIndex + 1);
       }
     }, intv);
   }
 
   findNextAnimGroup(grp): number {
-    if(this.skipAnimGroup.indexOf(grp) >= 0){
+    if (this.skipAnimGroup.indexOf(grp) >= 0) {
       grp++;
-      if(grp < this.imgGroup.length){
-        return this.findNextAnimGroup(grp); 
+      if (grp < this.imgGroup.length) {
+        return this.findNextAnimGroup(grp);
       }
     }
-    return grp; 
+    return grp;
   }
 
   nextImage(imgIndex: number): string {

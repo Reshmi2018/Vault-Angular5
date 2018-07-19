@@ -7,15 +7,17 @@ import { SecurityService } from './../security.service';
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit {
-  question:any;
-  constructor(private security: SecurityService) { 
-    this.question = {}; 
+  question: any;
+  constructor(private security: SecurityService) {
+    this.question = {};
   }
 
   ngOnInit() {
     this.security.getQuestion()
       .subscribe(data => {
-        this.question = data;
+        if (data) {
+          this.question = data;
+        }
       });
   }
 
