@@ -2,6 +2,7 @@
   display: inline-block;
   position: relative;
   left: 25px;
+  top: -90px;
 }
 
 .option-wrapper li.option {

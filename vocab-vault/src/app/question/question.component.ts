@@ -8,13 +8,14 @@ import { SecurityService } from './../security.service';
 })
 export class QuestionComponent implements OnInit {
   question:any;
-  constructor(private security: SecurityService) { }
+  constructor(private security: SecurityService) { 
+    this.question = {}; 
+  }
 
   ngOnInit() {
     this.security.getQuestion()
       .subscribe(data => {
         this.question = data;
-        console.log('data', this.question);
       });
   }
 

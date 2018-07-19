@@ -9,11 +9,13 @@ export class SecurityService {
   private qID: number;
   private groupIndex: number;
   private questionSubject$: Subject<any>;
+  private unlockSubject$: Subject<any>;
 
   constructor(private http: Http) {
     this.qID = 0;
     this.groupIndex = 0;
     this.questionSubject$ = new Subject();
+    this.unlockSubject$ = new Subject(); 
     this.loadQuestions().subscribe(data => {
       this.questions = data;
       this.sendNext();
@@ -25,6 +27,10 @@ export class SecurityService {
     return this.questionSubject$;
   }
 
+  unlockVault(): Subject<any> {
+    return this.unlockSubject$;
+  }
+
   validate(ans) {
     var isCorrect = this.questions[this.groupIndex][this.qID].answer === ans;
     this.questions[this.groupIndex][this.qID].correctAnswered = isCorrect; 
@@ -33,6 +39,7 @@ export class SecurityService {
       setTimeout(() =>{
         this.processNextQuestion(); 
       },2000);
+      this.unlockSubject$.next(); 
       return true;
     }else if(!isCorrect && this.questions[this.groupIndex][this.qID].try === 2) {
       setTimeout(() =>{
