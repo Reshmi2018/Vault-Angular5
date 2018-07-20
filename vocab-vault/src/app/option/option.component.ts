@@ -11,29 +11,57 @@ export class OptionComponent implements OnInit {
   faCaretRight = faCaretRight;
   private question: any;
   private selectedOption: string;
+  private showAnswer: boolean;
+  private correctAnswer: string;
+  private disableOK: boolean;
+  private disableOptions: boolean;
 
   constructor(private security: SecurityService) {
     this.question = {};
+    this.disableOK = true;
+    this.disableOptions = false;
   }
 
   ngOnInit() {
     this.security.getQuestion()
       .subscribe(data => {
+        this.showAnswer = false;
+        if (!data) {
+          this.disableOptions = true;
+          return; 
+        }
+        this.disableOptions = false;
         this.question = data;
-        console.log('data', this.question);
+        this.selectedOption = undefined;
+        this.correctAnswer = undefined;
       });
   }
 
   setOptionSelected(opt: string): void {
+    this.disableOK = this.disableOptions;
+    if(this.disableOptions) return;
     this.selectedOption = opt;
+    
   }
 
   submitAns(): void {
-    let isValid = this.security.validate(this.selectedOption);
-    this.selectedOption = undefined; 
-    if(isValid) {
+    this.disableOK = this.disableOptions = true;
+    let correctAns = this.security.validate(this.selectedOption);
 
+    if (typeof correctAns === 'string') {
+      this.correctAnswer = correctAns;
+      this.showAnswer = true;
+    } else if (correctAns === false) {
+      setTimeout(() => {
+        this.disableOptions = false;
+        this.correctAnswer = undefined;
+        this.selectedOption = undefined;
+      }, 2000);
     }
+  }
+
+  resetApp(): void {
+    this.security.resetActivity(); 
   }
 
 }

@@ -2,6 +2,7 @@
   display: inline-block;
   position: relative;
   left: 25px;
+  top: -90px;
 }
 
 .option-wrapper li.option {
@@ -20,6 +21,14 @@
   position: relative;
   top: -16px;
   padding-left: 20px;
+}
+
+.option span.red {
+  color: rgb(214, 0, 0)
+}
+
+.option span.green {
+  color: rgb(82, 218, 4)
 }
 
 .submit-panel a {

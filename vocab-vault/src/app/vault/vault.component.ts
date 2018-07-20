@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from './../security.service';
+import { AudioService } from './../audio.service';
 
 
 /**
@@ -17,21 +18,31 @@ export class VaultComponent implements OnInit {
   intvID: any;
   basePath: string;
   imgGroup: Array<string>[];
+  skipAnimGroup: Array<number>;
 
-  constructor(private security: SecurityService) { }
+  constructor(private security: SecurityService, private audio: AudioService) { }
 
   ngOnInit() {
     this.groupIndex = 0;
     this.imgName = 'lock0001.png';
     this.basePath = "/assets/img/vault/";
-    this.imgGroup = []; 
+    this.imgGroup = [];
+    this.skipAnimGroup = [1, 7];
     this.createImgGroups();
+    this.security.unlockVault().subscribe(() => {
+      this.unlockNext();
+    });
+
+    this.security.resetVault().subscribe(() => {
+      this.groupIndex = 0;
+      this.imgName = 'lock0001.png';
+    });
   }
 
   createImgGroups(): void {
     let imgNames = [];
     for (let i = 1; i < 457; i++) {
-      imgNames.push(this.nextImage(i-1));
+      imgNames.push(this.nextImage(i - 1));
       if (i % 46 === 0) {
         this.imgGroup.push(imgNames);
         imgNames = [];
@@ -41,17 +52,27 @@ export class VaultComponent implements OnInit {
   }
 
   unlockNext() {
-    console.log(this.security.getQuestion());
-    let intv = 50;
+    let intv = 40;
     let index = 0;
     this.intvID = setInterval(() => {
       intv += 2;
       this.imgName = this.imgGroup[this.groupIndex][index++];
       if (index >= this.imgGroup[this.groupIndex].length) {
         clearInterval(this.intvID);
-        this.groupIndex++;
+        this.groupIndex = this.findNextAnimGroup(this.groupIndex + 1);
       }
     }, intv);
+    this.audio.loadAndPlay('vaultOpen');
+  }
+
+  findNextAnimGroup(grp): number {
+    if (this.skipAnimGroup.indexOf(grp) >= 0) {
+      grp++;
+      if (grp < this.imgGroup.length) {
+        return this.findNextAnimGroup(grp);
+      }
+    }
+    return grp;
   }
 
   nextImage(imgIndex: number): string {
