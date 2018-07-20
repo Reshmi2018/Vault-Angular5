@@ -1,31 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { CommonService } from './common.service';
 
 @Pipe({
   name: 'randomOrder'
 })
 export class RandomOrderPipe implements PipeTransform {
 
+  constructor(private common: CommonService) { }
+
   transform(arr: Array<string>): Array<string> {
-    return this.shuffle(arr || []);
+    return this.common.shuffle(arr || []);
   }
-
-  shuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-  }
-
 }

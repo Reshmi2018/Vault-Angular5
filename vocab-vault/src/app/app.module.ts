@@ -6,6 +6,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { VaultComponent } from './vault/vault.component';
 import { SecurityService } from './security.service';
+import { AudioService } from './audio.service';
+import { CommonService } from './common.service';
 import { OptionComponent } from './option/option.component';
 import { RandomOrderPipe } from './random-order.pipe';
 import { QuestionComponent } from './question/question.component';
@@ -23,7 +25,11 @@ import { QuestionComponent } from './question/question.component';
     HttpModule,
     FontAwesomeModule
   ],
-  providers: [SecurityService],
+  providers: [
+    CommonService,
+    SecurityService,
+    AudioService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

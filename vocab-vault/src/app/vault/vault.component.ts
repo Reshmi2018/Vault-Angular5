@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from './../security.service';
+import { AudioService } from './../audio.service';
 
 
 /**
@@ -19,17 +20,22 @@ export class VaultComponent implements OnInit {
   imgGroup: Array<string>[];
   skipAnimGroup: Array<number>;
 
-  constructor(private security: SecurityService) { }
+  constructor(private security: SecurityService, private audio: AudioService) { }
 
   ngOnInit() {
     this.groupIndex = 0;
     this.imgName = 'lock0001.png';
     this.basePath = "/assets/img/vault/";
     this.imgGroup = [];
-    this.skipAnimGroup = [1, 7, 2, 3, 4, 5, 6, 7, 8];
+    this.skipAnimGroup = [1, 7];
     this.createImgGroups();
     this.security.unlockVault().subscribe(() => {
       this.unlockNext();
+    });
+
+    this.security.resetVault().subscribe(() => {
+      this.groupIndex = 0;
+      this.imgName = 'lock0001.png';
     });
   }
 
@@ -56,6 +62,7 @@ export class VaultComponent implements OnInit {
         this.groupIndex = this.findNextAnimGroup(this.groupIndex + 1);
       }
     }, intv);
+    this.audio.loadAndPlay('vaultOpen');
   }
 
   findNextAnimGroup(grp): number {

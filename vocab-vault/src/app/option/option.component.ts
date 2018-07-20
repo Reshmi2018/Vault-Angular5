@@ -14,23 +14,23 @@ export class OptionComponent implements OnInit {
   private showAnswer: boolean;
   private correctAnswer: string;
   private disableOK: boolean;
-  private endOfQuestion: boolean;
+  private disableOptions: boolean;
 
   constructor(private security: SecurityService) {
     this.question = {};
     this.disableOK = true;
-    this.endOfQuestion = false;
+    this.disableOptions = false;
   }
 
   ngOnInit() {
     this.security.getQuestion()
       .subscribe(data => {
         this.showAnswer = false;
-        console.log('data', data);
         if (!data) {
-          this.endOfQuestion = true;
+          this.disableOptions = true;
           return; 
         }
+        this.disableOptions = false;
         this.question = data;
         this.selectedOption = undefined;
         this.correctAnswer = undefined;
@@ -38,12 +38,14 @@ export class OptionComponent implements OnInit {
   }
 
   setOptionSelected(opt: string): void {
+    this.disableOK = this.disableOptions;
+    if(this.disableOptions) return;
     this.selectedOption = opt;
-    this.disableOK = this.endOfQuestion;
+    
   }
 
   submitAns(): void {
-    this.disableOK = !this.endOfQuestion;
+    this.disableOK = this.disableOptions = true;
     let correctAns = this.security.validate(this.selectedOption);
 
     if (typeof correctAns === 'string') {
@@ -51,10 +53,15 @@ export class OptionComponent implements OnInit {
       this.showAnswer = true;
     } else if (correctAns === false) {
       setTimeout(() => {
+        this.disableOptions = false;
         this.correctAnswer = undefined;
         this.selectedOption = undefined;
       }, 2000);
     }
+  }
+
+  resetApp(): void {
+    this.security.resetActivity(); 
   }
 
 }
