@@ -9,12 +9,12 @@ import { SecurityService } from './../security.service';
 })
 export class OptionComponent implements OnInit {
   faCaretRight = faCaretRight;
-  private question: any;
   private selectedOption: string;
   private showAnswer: boolean;
   private correctAnswer: string;
-  private disableOK: boolean;
   private disableOptions: boolean;
+  public disableOK: boolean;
+  public question: any;
 
   constructor(private security: SecurityService) {
     this.question = {};
