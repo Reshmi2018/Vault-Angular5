@@ -25,7 +25,7 @@ export class VaultComponent implements OnInit {
   ngOnInit() {
     this.groupIndex = 0;
     this.imgName = 'lock0001.png';
-    this.basePath = "/assets/img/vault/";
+    this.basePath = "assets/img/vault/";
     this.imgGroup = [];
     this.skipAnimGroup = [1, 7];
     this.createImgGroups();

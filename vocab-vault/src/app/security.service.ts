@@ -87,7 +87,7 @@ export class SecurityService {
   }
 
   private loadQuestions(): Observable<any> {
-    return this.http.get("/assets/data/questions.json")
+    return this.http.get("assets/data/questions.json")
       .pipe(
         map((res: any) => res.json()),
         catchError(error => of(`Bad Promise: ${error}`))

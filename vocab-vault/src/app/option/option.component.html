@@ -1,7 +1,7 @@
 <div class='option-wrapper'>
   <ul>
     <li class='option' id='question.qid' *ngFor='let opt of question.options | randomOrder' (click)='setOptionSelected(opt)'>
-      <a href='#' [ngClass]="{'play': true, 'white': selectedOption != opt, 'yellow': selectedOption == opt}"><fa-icon [icon]='faCaretRight'></fa-icon></a>
+      <a [ngClass]="{'play': true, 'white': selectedOption != opt, 'yellow': selectedOption == opt}"><fa-icon [icon]='faCaretRight'></fa-icon></a>
       <span [ngClass]="{'red' : showAnswer == true && selectedOption == opt, 'green': showAnswer == true && correctAnswer == opt}" >{{opt}}</span>
     </li>
   </ul>
